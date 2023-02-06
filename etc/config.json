@@ -8,7 +8,7 @@
 // ├─ 4_inbounds 入站设置 - 什么流量可以流入 Xray
 // └─ 5_outbounds 出站设置 - 流出 Xray 的流量往哪里去
 {
-  // 1\_日志设置
+  // 1_日志设置
   "log": {
     "loglevel": "warning", // 内容从少到多: "none", "error", "warning", "info", "debug"
     "access": "/var/log/xray/access.log", // 访问记录
@@ -66,7 +66,7 @@
       "settings": {
         "clients": [
           {
-            "id": "650bcc58-e8ab-4e45-bf3e-ef9680729dc7", // 填写你的 UUID
+            "id": "", // 填写你的 UUID
             "flow": "xtls-rprx-vision",
             "level": 0,
             "email": "vpsadmin@domain.com"
@@ -75,7 +75,7 @@
         "decryption": "none",
         "fallbacks": [
           {
-            "dest": "/dev/shm/h1.sock", // 默认回落到防探测的代理
+            "dest": "/dev/shm/h1.sock",
 	    "xver": 2
           },
 	  {
@@ -123,7 +123,7 @@
       "settings": {
         "clients": [
           {
-            "id": "650bcc58-e8ab-4e45-bf3e-ef9680729dc7", // 填写你的 UUID
+            "id": "", // 填写你的 UUID
             "level": 0,
             "email": "vpsadmin@domain.com"
           }
