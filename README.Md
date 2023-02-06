@@ -95,7 +95,7 @@ server {
     location / {
         add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
         proxy_pass http://unix:/run/cloudreve.sock;
-		    proxy_redirect off;
+	proxy_redirect off;
     }
 }
 ```
