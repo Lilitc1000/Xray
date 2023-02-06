@@ -1,6 +1,6 @@
 Xray 科学上网小结
 -
-基础设置引用 Project X 的小小白白话文 https://xtls.github.io/document/level-0/ ，其中增加了利用回落功能将流量分别分流到 Websocket 和 Nginx 中，网站使用 Cloudreve 网盘作伪装  
+基础设置引用 Project X 的小小白白话文 https://xtls.github.io/document/level-0/ ，其中增加了利用回落功能将流量分别分流到 Websocket 和 Nginx 中的功能，网站使用 Cloudreve 网盘作伪装  
 ### 配置 Cloudreve 网盘
 版本号参照 https://github.com/cloudreve/Cloudreve 中的最新版本，这里以3.5.3为例  
 ```shell
