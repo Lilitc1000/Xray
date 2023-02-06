@@ -69,7 +69,7 @@
             "id": "650bcc58-e8ab-4e45-bf3e-ef9680729dc7", // 填写你的 UUID
             "flow": "xtls-rprx-vision",
             "level": 0,
-            "email": "lilitc@971365.xyz"
+            "email": "vpsadmin@domain.com"
           }
         ],
         "decryption": "none",
@@ -103,8 +103,8 @@
           "certificates": [
             {
 	      "ocspStapling": 3600,
-              "certificateFile": "/home/lilitc/xray_cert/xray.crt",
-              "keyFile": "/home/lilitc/xray_cert/xray.key"
+              "certificateFile": "/home/vpsadmin/xray_cert/xray.crt",
+              "keyFile": "/home/vpsadmin/xray_cert/xray.key"
             }
           ]
         },
@@ -125,7 +125,7 @@
           {
             "id": "650bcc58-e8ab-4e45-bf3e-ef9680729dc7", // 填写你的 UUID
             "level": 0,
-            "email": "lilitc@971365.xyz"
+            "email": "vpsadmin@domain.com"
           }
         ],
         "decryption": "none"
