@@ -72,7 +72,7 @@ export CF_Email="xxxxxx"
 acme.sh --issue --dns dns_cf -d domain.com -k ec-256 --force
 ```
 ### 配置Nginx
-若不为 root 用户，则需查找 Nginx 配置文件 /etc/nginx/nginx.conf 中的 User ，将其改为自己的用户名
+若不为 root 用户，则需查找 Nginx 配置文件 /etc/nginx/nginx.conf 中的 User ，将其改为自己的用户名  
 在 Nginx 站点配置文件 /etc/nginx/conf.d/default.conf 中增加Server段
 ```shell
 # 禁止IP或错误的域名访问网站
