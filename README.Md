@@ -158,3 +158,18 @@ systemctl stop nginx
 systemctl stop xray
 rm -rf /dev/shm/*.sock
 ```
+### 疑难解答
+对于nginx如下错误提示：
+```shell
+nginx.service: Failed to read PID from file /run/nginx.pid: Invalid argument
+或者
+openresty.service: Failed to parse PID from file /run/openresty.pid: Invalid argument
+```
+请用如下步骤进行恢复：
+```shell
+mkdir /etc/systemd/system/nginx.service.d
+# 非root用户下面一行用echo -e "[Service]\nExecStartPost=/bin/sleep 0.1" | sudo tee /etc/systemd/system/nginx.service.d/override.conf代替
+printf "[Service]\nExecStartPost=/bin/sleep 0.1\n" > /etc/systemd/system/nginx.service.d/override.conf
+systemctl daemon-reload
+systemctl restart nginx
+```
