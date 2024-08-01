@@ -26,6 +26,8 @@ Wants=network.target
 [Service]
 WorkingDirectory=/usr/local/bin/cloudreve
 ExecStart=/usr/local/bin/cloudreve/cloudreve
+ExecStartPost=/bin/sleep 1
+ExecStartPost=/bin/chmod a+rwx /run/cloudreve.sock
 Restart=on-abnormal
 RestartSec=5s
 KillMode=mixed
@@ -41,7 +43,7 @@ WantedBy=multi-user.target
 systemctl start cloudreve
 systemctl enable cloudreve
 ```
-设置 Cloudreve 配置文件并重启，注意如果不是 root 用户的话需要对 cloudreve.sock 进行权限设置以让它能被其他用户读取和写入
+设置 Cloudreve 配置文件并重启
 ```shell
 nano /usr/local/bin/cloudreve/conf.ini
 
@@ -53,9 +55,6 @@ Listen = :5212
 
 [UnixSocket]
 Listen = /run/cloudreve.sock
-
-# 若不为root用户则需对cloudreve.sock进行权限设置
-sudo chmod a+rwx /run/cloudreve.sock
 
 # 重启 CLoudreve 服务
 systemctl restart cloudreve
@@ -151,13 +150,6 @@ inbound增加一段用来监听回落到Websocket端口的流量
   }
 }
 ```
-### 修改设置
-以后若要继续修改设置需要先清除sock文件，避免重新启动后 Nginx 报出端口被占用的错误
-```shell
-systemctl stop nginx
-systemctl stop xray
-rm -rf /dev/shm/*.sock
-```
 ### 疑难解答
 对于nginx如下错误提示：
 ```shell
@@ -172,4 +164,30 @@ mkdir /etc/systemd/system/nginx.service.d
 printf "[Service]\nExecStartPost=/bin/sleep 0.1\n" > /etc/systemd/system/nginx.service.d/override.conf
 systemctl daemon-reload
 systemctl restart nginx
+```
+
+对于nginx如下端口被占用的错误：
+```shell
+nginx[1795]: nginx: [emerg] bind() to unix:/dev/shm/h1.sock failed (98: Address already in use)
+```
+请对nginx的systemd的服务单元文件作如下修改：
+```shell
+[Unit]
+Description=A high performance web server and a reverse proxy server
+Documentation=man:nginx(8)
+After=network.target nss-lookup.target
+
+[Service]
+Type=forking
+PIDFile=/run/nginx.pid
+ExecStartPre=/usr/sbin/nginx -t -q -g 'daemon on; master_process on;'
+ExecStartPre=/bin/sh -c '/bin/rm -f /dev/shm/*.sock'            # 启动nginx前先清除sock文件
+ExecStart=/usr/sbin/nginx -g 'daemon on; master_process on;'
+ExecReload=/usr/sbin/nginx -g 'daemon on; master_process on;' -s reload
+ExecStop=-/sbin/start-stop-daemon --quiet --stop --retry QUIT/5 --pidfile /run/nginx.pid
+TimeoutStopSec=5
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target
 ```
