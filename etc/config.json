@@ -22,8 +22,12 @@
       {
         "address": "1.2.3.4",
         "port": 5353,
-        "domains": ["domain:xray.com"],
-        "expectIPs": ["geoip:cn"],
+        "domains": [
+          "domain:xray.com"
+        ],
+        "expectIPs": [
+          "geoip:cn"
+        ],
         "clientIP": "1.2.3.4"
       },
       "localhost"
@@ -44,7 +48,9 @@
       {
         // 3.2 防止服务器直连国内
         "type": "field",
-        "ip": ["geoip:cn"],
+        "ip": [
+          "geoip:cn"
+        ],
         "outboundTag": "block"
       },
       // 3.3 屏蔽广告
@@ -67,7 +73,6 @@
         "clients": [
           {
             "id": "", // 填写你的 UUID
-            "flow": "xtls-rprx-vision",
             "level": 0,
             "email": "vpsadmin@domain.com"
           }
@@ -76,37 +81,36 @@
         "fallbacks": [
           {
             "dest": "/dev/shm/h1.sock",
-	    "xver": 2
-          },
-	  {
-	    "alpn": "h2",
-            "dest": "/dev/shm/h2c.sock",
             "xver": 2
-	  },
-	  {
-	    "path": "/websocket",
-            "dest": "@vless-ws",
+          },
+          {
+            "alpn": "h2",
+            "dest": "/dev/shm/h2c.sock",
             "xver": 2
           }
         ]
       },
       "streamSettings": {
-        "network": "tcp",
+        "network": "xhttp",
         "security": "tls",
         "tlsSettings": {
           "alpn": [
-              "h2",
-              "http/1.1"
-            ],
-	  "minVersion": "1.2",
-	  "cipherSuites": "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256:TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384:TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
+            "h2",
+            "http/1.1"
+          ],
+          "minVersion": "1.2",
+          "cipherSuites": "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256:TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384:TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
           "certificates": [
             {
-	      "ocspStapling": 3600,
+              "ocspStapling": 3600,
               "certificateFile": "/home/vpsadmin/xray_cert/xray.crt",
               "keyFile": "/home/vpsadmin/xray_cert/xray.key"
             }
           ]
+        },
+        "xhttpSettings": {
+          "acceptProxyProtocol": true,
+          "path": "/websocket"
         },
         "sniffing": {
           "enabled": true,
@@ -118,47 +122,18 @@
       }
     },
     {
-      "listen": "@vless-ws",
-      "protocol": "vless",
-      "settings": {
-        "clients": [
-          {
-            "id": "", // 填写你的 UUID
-            "level": 0,
-            "email": "vpsadmin@domain.com"
-          }
-        ],
-        "decryption": "none"
-      },
-      "streamSettings": {
-        "network": "ws",
-        "security": "none",
-        "wsSettings": {
-	     "acceptProxyProtocol": true,
-	     "path": "/websocket"
-	}
-      },
-      "sniffing": {
-        "enabled": true,
-        "destOverride": [
-          "http",
-          "tls"
-        ]
-      }
-    },
-    {
       "listen": "0.0.0.0",
       "port": 1234,
       "protocol": "vmess",
       "settings": {
-	    "clients": [
+        "clients": [
           {
             "id": "" // 填写你的 UUID
           }
         ]
       },
       "streamSettings": {
-	    "network": "tcp"
+        "network": "tcp"
       }
     }
   ],

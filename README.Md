@@ -110,45 +110,8 @@ Config.json 中的 fallbacks 改成如下内容
     "alpn": "h2",
     "dest": "/dev/shm/h2c.sock",
     "xver": 2
-  },
-  {
-    "path": "/websocket",
-    "dest": "@vless-ws",
-    "xver": 2
   }
 ]
-```
-inbound增加一段用来监听回落到Websocket端口的流量
-```json
-{
-  "listen": "@vless-ws",
-  "protocol": "vless",
-  "settings": {
-  "clients": [
-    {
-      "id": "", // 填写你的 UUID
-      "level": 0,
-      "email": "vpsadmin@domain.com"
-    }
-  ],
-  "decryption": "none"
-  },
-  "streamSettings": {
-    "network": "ws",
-    "security": "none",
-    "wsSettings": {
-      "acceptProxyProtocol": true,
-      "path": "/websocket"
-    }
-  },
-  "sniffing": {
-    "enabled": true,
-    "destOverride": [
-      "http",
-      "tls"
-    ]
-  }
-}
 ```
 ### 疑难解答
 对于nginx如下错误提示：
